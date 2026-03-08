@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: health-service
+          uri: lb://health-service
+          predicates:
+            - Path=/api/health/**
+        - id: life-service
+          uri: lb://life-service
+          predicates:
+            - Path=/api/group-purchase/**
+            - Path=/api/quarantine/**
+            - Path=/api/community/help
+        - id: info-service
+          uri: lb://info-service
+          predicates:
+            - Path=/api/notice/**
+            - Path=/api/map/**
+            - Path=/api/chat/**
+
+# Eureka 配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
