@@ -1,104 +1,109 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { 
-  Promotion, 
-  View, 
-  ShoppingCart, 
-  Service, 
-  HelpFilled, 
-  Message, 
-  Position, 
-  ChatDotRound,
-  Calendar,
-  Clock,
-  Check
-} from '@element-plus/icons-vue'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import * as Icons from '@element-plus/icons-vue';
 
-const router = useRouter()
-const healthCodeStatus = ref('绿码')
-const healthCodeValidity = ref('2026-03-15')
+const IconPlaceholder = { template: '<span></span>' };
+const Promotion = Icons['Promotion'] || IconPlaceholder;
+const View = Icons['View'] || IconPlaceholder;
+const ShoppingCart = Icons['ShoppingCart'] || IconPlaceholder;
+const Service = Icons['Service'] || IconPlaceholder;
+const HelpFilled = Icons['HelpFilled'] || IconPlaceholder;
+const Message = Icons['Message'] || IconPlaceholder;
+const Position = Icons['Position'] || IconPlaceholder;
+const ChatDotRound = Icons['ChatDotRound'] || IconPlaceholder;
+const Calendar = Icons['Calendar'] || IconPlaceholder;
+const Clock = Icons['Clock'] || IconPlaceholder;
+const Check = Icons['Check'] || IconPlaceholder;
+
+const router = useRouter();
+const healthCodeStatus = ref('绿码');
+const healthCodeValidity = ref('2026-03-15');
 const notices = ref([
   {
     id: 1,
     title: '关于开展新一轮核酸检测的通知',
-    time: '2026-03-08'
+    time: '2026-03-08',
   },
   {
     id: 2,
     title: '社区疫情防控措施调整通知',
-    time: '2026-03-07'
+    time: '2026-03-07',
   },
   {
     id: 3,
     title: '生活物资配送安排',
-    time: '2026-03-06'
-  }
-])
+    time: '2026-03-06',
+  },
+]);
 
 const quickServices = [
   {
     name: '健康打卡',
     icon: Promotion,
     path: '/health/checkin',
-    color: '#409EFF'
+    color: '#409EFF',
   },
   {
     name: '健康码',
     icon: View,
     path: '/health/code',
-    color: '#67C23A'
+    color: '#67C23A',
   },
   {
     name: '团购商城',
     icon: ShoppingCart,
     path: '/life/group-purchase',
-    color: '#E6A23C'
+    color: '#E6A23C',
   },
   {
     name: '隔离服务',
     icon: Service,
     path: '/life/quarantine',
-    color: '#F56C6C'
+    color: '#F56C6C',
   },
   {
     name: '社区互助',
     icon: HelpFilled,
     path: '/life/help',
-    color: '#909399'
+    color: '#909399',
   },
   {
     name: '通知公告',
     icon: Message,
     path: '/info/notice',
-    color: '#409EFF'
+    color: '#409EFF',
   },
   {
     name: '防疫地图',
     icon: Position,
     path: '/info/map',
-    color: '#67C23A'
+    color: '#67C23A',
   },
   {
     name: '在线沟通',
     icon: ChatDotRound,
     path: '/info/chat',
-    color: '#E6A23C'
-  }
-]
+    color: '#E6A23C',
+  },
+];
 
 const navigateTo = (path) => {
-  router.push(path)
-}
+  router.push(path);
+};
 
 const getHealthCodeColor = () => {
   switch (healthCodeStatus.value) {
-    case '绿码': return '#67C23A'
-    case '黄码': return '#E6A23C'
-    case '红码': return '#F56C6C'
-    default: return '#67C23A'
+    case '绿码':
+      return '#67C23A';
+    case '黄码':
+      return '#E6A23C';
+    case '红码':
+      return '#F56C6C';
+    default:
+      return '#67C23A';
   }
-}
+};
 </script>
 
 <template>
@@ -127,10 +132,7 @@ const getHealthCodeColor = () => {
           </div>
         </template>
         <div class="health-code-content">
-          <div 
-            class="health-code-status" 
-            :style="{ backgroundColor: getHealthCodeColor() }"
-          >
+          <div class="health-code-status" :style="{ backgroundColor: getHealthCodeColor() }">
             <el-icon class="health-code-icon"><View /></el-icon>
             <span>{{ healthCodeStatus }}</span>
           </div>
@@ -155,13 +157,16 @@ const getHealthCodeColor = () => {
           </div>
         </template>
         <div class="quick-services-grid">
-          <div 
-            v-for="(service, index) in quickServices" 
-            :key="index" 
-            class="service-item" 
+          <div
+            v-for="(service, index) in quickServices"
+            :key="index"
+            class="service-item"
             @click="navigateTo(service.path)"
           >
-            <div class="service-icon" :style="{ backgroundColor: service.color + '20', color: service.color }">
+            <div
+              class="service-icon"
+              :style="{ backgroundColor: service.color + '20', color: service.color }"
+            >
               <component :is="service.icon" />
             </div>
             <span>{{ service.name }}</span>
@@ -241,8 +246,8 @@ const getHealthCodeColor = () => {
   grid-template-rows: auto auto;
   gap: 24px;
   grid-template-areas:
-    "health quick"
-    "notices quick";
+    'health quick'
+    'notices quick';
 }
 
 .health-code-card {
@@ -429,11 +434,11 @@ const getHealthCodeColor = () => {
   .content-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "health"
-      "quick"
-      "notices";
+      'health'
+      'quick'
+      'notices';
   }
-  
+
   .quick-services-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -443,30 +448,30 @@ const getHealthCodeColor = () => {
   .welcome-content {
     padding: 30px;
   }
-  
+
   .welcome-content h1 {
     font-size: 24px;
   }
-  
+
   .quick-services-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .health-code-content {
     flex-direction: column;
     text-align: center;
     gap: 16px;
   }
-  
+
   .health-code-status {
     width: 120px;
     height: 120px;
   }
-  
+
   .health-code-icon {
     font-size: 40px;
   }
-  
+
   .health-code-status span {
     font-size: 20px;
   }

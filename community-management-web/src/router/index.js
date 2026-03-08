@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue')
+    component: () => import('../views/Home.vue'),
   },
   {
     path: '/health',
@@ -14,19 +14,19 @@ const routes = [
       {
         path: 'checkin',
         name: 'HealthCheckin',
-        component: () => import('../components/health/HealthCheckin.vue')
+        component: () => import('../components/health/HealthCheckin.vue'),
       },
       {
         path: 'code',
         name: 'HealthCode',
-        component: () => import('../components/health/HealthCode.vue')
+        component: () => import('../components/health/HealthCode.vue'),
       },
       {
         path: 'risk',
         name: 'RiskWarning',
-        component: () => import('../components/health/RiskWarning.vue')
-      }
-    ]
+        component: () => import('../components/health/RiskWarning.vue'),
+      },
+    ],
   },
   {
     path: '/life',
@@ -36,19 +36,19 @@ const routes = [
       {
         path: 'group-purchase',
         name: 'GroupPurchase',
-        component: () => import('../components/life/GroupPurchase.vue')
+        component: () => import('../components/life/GroupPurchase.vue'),
       },
       {
         path: 'quarantine',
         name: 'QuarantineService',
-        component: () => import('../components/life/QuarantineService.vue')
+        component: () => import('../components/life/QuarantineService.vue'),
       },
       {
         path: 'help',
         name: 'CommunityHelp',
-        component: () => import('../components/life/CommunityHelp.vue')
-      }
-    ]
+        component: () => import('../components/life/CommunityHelp.vue'),
+      },
+    ],
   },
   {
     path: '/info',
@@ -58,30 +58,30 @@ const routes = [
       {
         path: 'notice',
         name: 'Notice',
-        component: () => import('../components/info/Notice.vue')
+        component: () => import('../components/info/Notice.vue'),
       },
       {
         path: 'map',
         name: 'EpidemicMap',
-        component: () => import('../components/info/EpidemicMap.vue')
+        component: () => import('../components/info/EpidemicMap.vue'),
       },
       {
         path: 'chat',
         name: 'Chat',
-        component: () => import('../components/info/Chat.vue')
-      }
-    ]
+        component: () => import('../components/info/Chat.vue'),
+      },
+    ],
   },
   {
     path: '/user',
     name: 'User',
-    component: () => import('../views/User.vue')
-  }
-]
+    component: () => import('../views/User.vue'),
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

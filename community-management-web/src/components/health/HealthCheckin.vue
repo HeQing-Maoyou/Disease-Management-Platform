@@ -1,48 +1,48 @@
 <script setup>
-import { ref, reactive } from 'vue'
-import { ElMessage } from 'element-plus'
-import * as Icons from '@element-plus/icons-vue'
-const IconPlaceholder = { template: '<span></span>' }
-const Thermometer = Icons.Thermometer || IconPlaceholder
-const AlertCircle = Icons.AlertCircle || IconPlaceholder
-const CheckCircle = Icons.CheckCircle || IconPlaceholder
-const Clock = Icons.Clock || IconPlaceholder
+import { ref, reactive } from 'vue';
+import { ElMessage } from 'element-plus';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const Thermometer = Icons['Thermometer'] || IconPlaceholder;
+const AlertCircle = Icons['AlertCircle'] || IconPlaceholder;
+const CheckCircle = Icons['CheckCircle'] || IconPlaceholder;
+const Clock = Icons['Clock'] || IconPlaceholder;
 
-const loading = ref(false)
-const successMessage = ref('')
-const currentDate = ref(new Date().toLocaleDateString())
+const loading = ref(false);
+const successMessage = ref('');
+const currentDate = ref(new Date().toLocaleDateString());
 
 const form = reactive({
   temperature: '',
-  symptoms: ''
-})
+  symptoms: '',
+});
 
 const submitCheckin = async () => {
   if (!form.temperature) {
-    ElMessage.warning('请输入体温')
-    return
+    ElMessage.warning('请输入体温');
+    return;
   }
-  
-  const temp = parseFloat(form.temperature)
+
+  const temp = parseFloat(form.temperature);
   if (temp < 35 || temp > 42) {
-    ElMessage.warning('请输入有效的体温值')
-    return
+    ElMessage.warning('请输入有效的体温值');
+    return;
   }
-  
-  loading.value = true
+
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
-      successMessage.value = '打卡成功，状态：正常'
-      form.temperature = ''
-      form.symptoms = ''
-      loading.value = false
-    }, 1000)
+      successMessage.value = '打卡成功，状态：正常';
+      form.temperature = '';
+      form.symptoms = '';
+      loading.value = false;
+    }, 1000);
   } catch (error) {
-    ElMessage.error('打卡失败，请重试')
-    loading.value = false
+    ElMessage.error('打卡失败，请重试');
+    loading.value = false;
   }
-}
+};
 </script>
 
 <template>
@@ -54,16 +54,16 @@ const submitCheckin = async () => {
         <span>{{ currentDate }}</span>
       </div>
     </div>
-    
+
     <el-card class="form-card" shadow="hover">
       <el-form :model="form" label-width="100px" class="checkin-form">
         <el-form-item label="体温" required>
           <div class="temperature-input">
             <el-icon class="input-icon"><Thermometer /></el-icon>
-            <el-input 
-              v-model="form.temperature" 
-              placeholder="请输入体温（℃）" 
-              type="number" 
+            <el-input
+              v-model="form.temperature"
+              placeholder="请输入体温（℃）"
+              type="number"
               step="0.1"
               class="temp-input"
             />
@@ -73,28 +73,23 @@ const submitCheckin = async () => {
         <el-form-item label="症状">
           <div class="symptoms-input">
             <el-icon class="input-icon"><AlertCircle /></el-icon>
-            <el-input 
-              v-model="form.symptoms" 
-              placeholder="如有症状请描述，如：咳嗽、发热等" 
-              type="textarea" 
+            <el-input
+              v-model="form.symptoms"
+              placeholder="如有症状请描述，如：咳嗽、发热等"
+              type="textarea"
               rows="3"
             />
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button 
-            type="primary" 
-            @click="submitCheckin" 
-            :loading="loading"
-            class="submit-button"
-          >
+          <el-button type="primary" :loading="loading" class="submit-button" @click="submitCheckin">
             <el-icon v-if="!loading"><CheckCircle /></el-icon>
             {{ loading ? '提交中...' : '提交打卡' }}
           </el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    
+
     <el-alert
       v-if="successMessage"
       :title="successMessage"
@@ -102,7 +97,7 @@ const submitCheckin = async () => {
       show-icon
       class="success-alert"
     />
-    
+
     <el-card class="tips-card" shadow="hover">
       <template #header>
         <div class="tips-header">
@@ -281,24 +276,24 @@ const submitCheckin = async () => {
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .temperature-input {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .temp-input {
     max-width: 100%;
     width: 100%;
   }
-  
+
   .symptoms-input {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .input-icon {
     margin-top: 0;
   }

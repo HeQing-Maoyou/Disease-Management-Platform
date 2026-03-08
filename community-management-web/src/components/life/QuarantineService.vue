@@ -1,29 +1,37 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Service, Calendar, Clock, CheckCircle, AlertCircle, Edit, Refresh } from '@element-plus/icons-vue'
+import { ref, reactive, onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const Service = Icons['Service'] || IconPlaceholder;
+const Calendar = Icons['Calendar'] || IconPlaceholder;
+const Clock = Icons['Clock'] || IconPlaceholder;
+const CheckCircle = Icons['CheckCircle'] || IconPlaceholder;
+const AlertCircle = Icons['AlertCircle'] || IconPlaceholder;
+const Edit = Icons['Edit'] || IconPlaceholder;
+const Refresh = Icons['Refresh'] || IconPlaceholder;
 
-const services = ref([])
+const services = ref([]);
 const form = reactive({
   serviceType: '',
-  appointmentTime: ''
-})
-const loading = ref(false)
+  appointmentTime: '',
+});
+const loading = ref(false);
 
 const serviceTypes = [
   { label: '上门收取生活垃圾', value: '垃圾收取' },
   { label: '上门核酸检测', value: '核酸检测' },
   { label: '物资配送', value: '物资配送' },
-  { label: '其他服务', value: '其他' }
-]
+  { label: '其他服务', value: '其他' },
+];
 
 const bookService = async () => {
   if (!form.serviceType || !form.appointmentTime) {
-    ElMessage.warning('请选择服务类型和预约时间')
-    return
+    ElMessage.warning('请选择服务类型和预约时间');
+    return;
   }
-  
-  loading.value = true
+
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -32,22 +40,22 @@ const bookService = async () => {
         serviceType: form.serviceType,
         appointmentTime: form.appointmentTime,
         status: '待处理',
-        createdAt: new Date().toLocaleString()
-      }
-      services.value.push(newService)
-      form.serviceType = ''
-      form.appointmentTime = ''
-      loading.value = false
-      ElMessage.success('服务预约成功')
-    }, 1000)
+        createdAt: new Date().toLocaleString(),
+      };
+      services.value.push(newService);
+      form.serviceType = '';
+      form.appointmentTime = '';
+      loading.value = false;
+      ElMessage.success('服务预约成功');
+    }, 1000);
   } catch (error) {
-    ElMessage.error('预约失败，请重试')
-    loading.value = false
+    ElMessage.error('预约失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const getServices = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -57,69 +65,69 @@ const getServices = async () => {
           serviceType: '垃圾收取',
           appointmentTime: '2026-03-08 10:00',
           status: '已完成',
-          createdAt: '2026-03-07 18:00:00'
+          createdAt: '2026-03-07 18:00:00',
         },
         {
           id: 2,
           serviceType: '核酸检测',
           appointmentTime: '2026-03-09 09:00',
           status: '待处理',
-          createdAt: '2026-03-08 08:00:00'
-        }
-      ]
-      loading.value = false
-    }, 1000)
+          createdAt: '2026-03-08 08:00:00',
+        },
+      ];
+      loading.value = false;
+    }, 1000);
   } catch (error) {
-    ElMessage.error('获取服务列表失败，请重试')
-    loading.value = false
+    ElMessage.error('获取服务列表失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const updateServiceStatus = async (serviceId, status) => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
-      const service = services.value.find(item => item.id === serviceId)
+      const service = services.value.find((item) => item.id === serviceId);
       if (service) {
-        service.status = status
+        service.status = status;
       }
-      loading.value = false
-      ElMessage.success('状态更新成功')
-    }, 1000)
+      loading.value = false;
+      ElMessage.success('状态更新成功');
+    }, 1000);
   } catch (error) {
-    ElMessage.error('状态更新失败，请重试')
-    loading.value = false
+    ElMessage.error('状态更新失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const getStatusType = (status) => {
   switch (status) {
-    case '已完成': return 'success'
-    case '处理中': return 'warning'
-    case '待处理': return 'info'
-    case '已取消': return 'danger'
-    default: return 'info'
+    case '已完成':
+      return 'success';
+    case '处理中':
+      return 'warning';
+    case '待处理':
+      return 'info';
+    case '已取消':
+      return 'danger';
+    default:
+      return 'info';
   }
-}
+};
 
 onMounted(() => {
-  getServices()
-})
+  getServices();
+});
 </script>
 
 <template>
   <div class="quarantine-service-container">
     <div class="page-header">
       <h2>隔离服务预约</h2>
-      <el-button 
-        type="primary" 
-        icon="Service"
-        circle
-        size="large"
-      />
+      <el-button type="primary" icon="Service" circle size="large" />
     </div>
-    
+
     <el-card class="book-service-card" shadow="hover">
       <template #header>
         <div class="card-header">
@@ -131,16 +139,16 @@ onMounted(() => {
         <el-form-item label="服务类型" required>
           <div class="input-with-icon">
             <el-icon class="input-icon"><AlertCircle /></el-icon>
-            <el-select 
-              v-model="form.serviceType" 
+            <el-select
+              v-model="form.serviceType"
               placeholder="请选择服务类型"
               class="service-select"
             >
-              <el-option 
-                v-for="type in serviceTypes" 
-                :key="type.value" 
-                :label="type.label" 
-                :value="type.value" 
+              <el-option
+                v-for="type in serviceTypes"
+                :key="type.value"
+                :label="type.label"
+                :value="type.value"
               />
             </el-select>
           </div>
@@ -159,30 +167,25 @@ onMounted(() => {
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button 
-            type="primary" 
-            @click="bookService" 
-            :loading="loading"
-            class="book-button"
-          >
+          <el-button type="primary" :loading="loading" class="book-button" @click="bookService">
             <el-icon><CheckCircle /></el-icon>
             提交预约
           </el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    
+
     <el-card class="service-list-card" shadow="hover">
       <template #header>
         <div class="card-header">
           <el-icon><Clock /></el-icon>
           <span>我的服务</span>
-          <el-button 
-            type="info" 
-            size="small" 
-            @click="getServices" 
+          <el-button
+            type="info"
+            size="small"
             :loading="loading"
             icon="Refresh"
+            @click="getServices"
           >
             刷新
           </el-button>
@@ -205,11 +208,11 @@ onMounted(() => {
         <el-table-column prop="createdAt" label="创建时间" width="180" />
         <el-table-column label="操作" width="200">
           <template #default="scope">
-            <el-select 
-              v-model="scope.row.status" 
-              @change="updateServiceStatus(scope.row.id, scope.row.status)" 
+            <el-select
+              v-model="scope.row.status"
               placeholder="更新状态"
               class="status-select"
+              @change="updateServiceStatus(scope.row.id, scope.row.status)"
             >
               <el-option label="待处理" value="待处理" />
               <el-option label="处理中" value="处理中" />
@@ -332,22 +335,22 @@ onMounted(() => {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .input-with-icon {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .service-select,
   .time-picker {
     width: 100%;
   }
-  
+
   .book-button {
     width: 100%;
   }
-  
+
   .status-select {
     width: 100%;
   }

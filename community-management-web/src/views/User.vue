@@ -1,7 +1,16 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { User, UserFilled, Phone, Idcard, Home, OfficeBuilding, Apartment, Star } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { ref, onMounted } from 'vue';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const User = Icons['User'] || IconPlaceholder;
+const UserFilled = Icons['UserFilled'] || IconPlaceholder;
+const Phone = Icons['Phone'] || IconPlaceholder;
+const Idcard = Icons['Idcard'] || IconPlaceholder;
+const Home = Icons['Home'] || IconPlaceholder;
+const OfficeBuilding = Icons['OfficeBuilding'] || IconPlaceholder;
+const Apartment = Icons['Apartment'] || IconPlaceholder;
+const Star = Icons['Star'] || IconPlaceholder;
+import { ElMessage } from 'element-plus';
 
 const userInfo = ref({
   id: 1,
@@ -13,8 +22,8 @@ const userInfo = ref({
   building: '1栋',
   unit: '1单元',
   room: '101',
-  role: '居民'
-})
+  role: '居民',
+});
 
 const familyMembers = ref([
   {
@@ -22,38 +31,38 @@ const familyMembers = ref([
     name: '李四',
     relationship: '配偶',
     idCard: '110101199002022345',
-    phone: '13800138001'
+    phone: '13800138001',
   },
   {
     id: 3,
     name: '张小明',
     relationship: '子女',
     idCard: '110101201503033456',
-    phone: '13800138002'
-  }
-])
+    phone: '13800138002',
+  },
+]);
 
-const activeTab = ref('info')
+const activeTab = ref('info');
 
 const saveChanges = () => {
   // 模拟保存操作
-  ElMessage.success('信息保存成功')
-}
+  ElMessage.success('信息保存成功');
+};
 
 const addFamilyMember = () => {
   // 模拟添加成员操作
-  ElMessage.success('添加成员功能开发中')
-}
+  ElMessage.success('添加成员功能开发中');
+};
 
 const editFamilyMember = (member) => {
   // 模拟编辑成员操作
-  ElMessage.success(`编辑成员: ${member.name}`)
-}
+  ElMessage.success(`编辑成员: ${member.name}`);
+};
 
 const deleteFamilyMember = (member) => {
   // 模拟删除成员操作
-  ElMessage.success(`删除成员: ${member.name}`)
-}
+  ElMessage.success(`删除成员: ${member.name}`);
+};
 </script>
 
 <template>
@@ -62,20 +71,22 @@ const deleteFamilyMember = (member) => {
       <div class="header-bg"></div>
       <div class="user-profile">
         <div class="avatar-container">
-          <img 
-            src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20user%20avatar&image_size=square" 
+          <img
+            src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20user%20avatar&image_size=square"
             alt="用户头像"
             class="user-avatar"
-          >
+          />
         </div>
         <div class="user-info">
           <h2 class="user-name">{{ userInfo.name }}</h2>
           <p class="user-role">{{ userInfo.role }}</p>
-          <p class="user-address">{{ userInfo.building }} {{ userInfo.unit }} {{ userInfo.room }}</p>
+          <p class="user-address">
+            {{ userInfo.building }} {{ userInfo.unit }} {{ userInfo.room }}
+          </p>
         </div>
       </div>
     </div>
-    
+
     <el-tabs v-model="activeTab" class="user-tabs">
       <el-tab-pane label="个人信息" name="info">
         <el-card class="user-card" shadow="hover">
@@ -113,20 +124,20 @@ const deleteFamilyMember = (member) => {
               <el-input v-model="userInfo.role" disabled />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="saveChanges" class="save-button" round>
+              <el-button type="primary" class="save-button" round @click="saveChanges">
                 保存修改
               </el-button>
             </el-form-item>
           </el-form>
         </el-card>
       </el-tab-pane>
-      
+
       <el-tab-pane label="家庭成员" name="family">
         <el-card class="user-card" shadow="hover">
           <template #header>
             <div class="card-header">
               <h3>家庭成员管理</h3>
-              <el-button type="primary" size="small" @click="addFamilyMember" round>
+              <el-button type="primary" size="small" round @click="addFamilyMember">
                 添加成员
               </el-button>
             </div>
@@ -138,21 +149,21 @@ const deleteFamilyMember = (member) => {
             <el-table-column prop="phone" label="手机号码" width="150" />
             <el-table-column label="操作" width="180">
               <template #default="scope">
-                <el-button 
-                  type="primary" 
-                  size="small" 
-                  @click="editFamilyMember(scope.row)"
+                <el-button
+                  type="primary"
+                  size="small"
                   class="table-button"
                   round
+                  @click="editFamilyMember(scope.row)"
                 >
                   编辑
                 </el-button>
-                <el-button 
-                  type="danger" 
-                  size="small" 
-                  @click="deleteFamilyMember(scope.row)"
+                <el-button
+                  type="danger"
+                  size="small"
                   class="table-button"
                   round
+                  @click="deleteFamilyMember(scope.row)"
                 >
                   删除
                 </el-button>
@@ -161,7 +172,7 @@ const deleteFamilyMember = (member) => {
           </el-table>
         </el-card>
       </el-tab-pane>
-      
+
       <el-tab-pane label="我的订单" name="orders">
         <el-card class="user-card" shadow="hover">
           <template #header>
@@ -174,13 +185,11 @@ const deleteFamilyMember = (member) => {
               <i class="el-icon-shopping-cart-2"></i>
             </div>
             <p class="empty-text">暂无订单</p>
-            <el-button type="primary" round class="empty-button">
-              去购物
-            </el-button>
+            <el-button type="primary" round class="empty-button"> 去购物 </el-button>
           </div>
         </el-card>
       </el-tab-pane>
-      
+
       <el-tab-pane label="我的服务" name="services">
         <el-card class="user-card" shadow="hover">
           <template #header>
@@ -193,9 +202,7 @@ const deleteFamilyMember = (member) => {
               <i class="el-icon-service"></i>
             </div>
             <p class="empty-text">暂无服务</p>
-            <el-button type="primary" round class="empty-button">
-              预约服务
-            </el-button>
+            <el-button type="primary" round class="empty-button"> 预约服务 </el-button>
           </div>
         </el-card>
       </el-tab-pane>
@@ -433,40 +440,40 @@ const deleteFamilyMember = (member) => {
     text-align: center;
     bottom: -100px;
   }
-  
+
   .avatar-container {
     margin-right: 0;
     margin-bottom: 12px;
   }
-  
+
   .user-name {
     font-size: 20px;
   }
-  
+
   .user-form .el-form-item {
     margin-bottom: 16px;
   }
-  
+
   .user-form .el-form-item__label {
     width: 100px;
   }
-  
+
   .family-table {
     font-size: 14px;
   }
-  
+
   .family-table .el-table__column {
     width: auto !important;
   }
-  
+
   .table-button {
     margin-bottom: 8px;
   }
-  
+
   .empty-state {
     padding: 40px 0;
   }
-  
+
   .empty-icon {
     font-size: 48px;
   }

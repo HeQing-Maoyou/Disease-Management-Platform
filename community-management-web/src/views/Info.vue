@@ -1,16 +1,20 @@
 <script setup>
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { Message, Position, ChatDotRound } from '@element-plus/icons-vue'
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const Message = Icons['Message'] || IconPlaceholder;
+const Position = Icons['Position'] || IconPlaceholder;
+const ChatDotRound = Icons['ChatDotRound'] || IconPlaceholder;
 
-const route = useRoute()
-const router = useRouter()
-const activeIndex = ref('/info/notice')
+const route = useRoute();
+const router = useRouter();
+const activeIndex = ref('/info/notice');
 
 const handleSelect = (key, keyPath) => {
-  activeIndex.value = key
-  router.push(key)
-}
+  activeIndex.value = key;
+  router.push(key);
+};
 </script>
 
 <template>
@@ -24,10 +28,10 @@ const handleSelect = (key, keyPath) => {
       <el-menu
         :default-active="activeIndex"
         class="info-menu"
-        @select="handleSelect"
         background-color="#ffffff"
         text-color="#333333"
         active-text-color="#1890ff"
+        @select="handleSelect"
       >
         <el-menu-item index="/info/notice">
           <el-icon class="menu-icon"><Message /></el-icon>
@@ -127,22 +131,22 @@ const handleSelect = (key, keyPath) => {
   .info-container {
     flex-direction: column;
   }
-  
+
   .sidebar-card {
     width: 100%;
   }
-  
+
   .info-menu {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
   }
-  
+
   .info-menu .el-menu-item {
     white-space: nowrap;
     margin: 0 4px;
   }
-  
+
   .content-container {
     padding: 24px;
   }

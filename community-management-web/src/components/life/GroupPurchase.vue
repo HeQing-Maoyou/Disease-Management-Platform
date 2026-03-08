@@ -1,21 +1,30 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElEmpty } from 'element-plus'
-import { ShoppingCart, Search, Plus, Minus, Trash, Checkout, Order, GoodsFilled } from '@element-plus/icons-vue'
+import { ref, reactive, onMounted } from 'vue';
+import { ElMessage, ElEmpty } from 'element-plus';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const ShoppingCart = Icons['ShoppingCart'] || IconPlaceholder;
+const Search = Icons['Search'] || IconPlaceholder;
+const Plus = Icons['Plus'] || IconPlaceholder;
+const Minus = Icons['Minus'] || IconPlaceholder;
+const Trash = Icons['Trash'] || IconPlaceholder;
+const Checkout = Icons['Checkout'] || IconPlaceholder;
+const Order = Icons['Order'] || IconPlaceholder;
+const GoodsFilled = Icons['GoodsFilled'] || IconPlaceholder;
 
-const products = ref([])
-const cart = ref([])
-const orders = ref([])
-const activeTab = ref('products')
-const loading = ref(false)
+const products = ref([]);
+const cart = ref([]);
+const orders = ref([]);
+const activeTab = ref('products');
+const loading = ref(false);
 const form = reactive({
   category: '',
   page: 1,
-  size: 10
-})
+  size: 10,
+});
 
 const getProducts = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -26,7 +35,7 @@ const getProducts = async () => {
           description: '包含土豆、白菜、萝卜等新鲜蔬菜',
           price: 39.9,
           stock: 100,
-          category: '蔬菜'
+          category: '蔬菜',
         },
         {
           id: 2,
@@ -34,7 +43,7 @@ const getProducts = async () => {
           description: '包含苹果、梨、橙子等新鲜水果',
           price: 59.9,
           stock: 50,
-          category: '水果'
+          category: '水果',
         },
         {
           id: 3,
@@ -42,7 +51,7 @@ const getProducts = async () => {
           description: '包含猪肉、鸡肉等肉类',
           price: 89.9,
           stock: 30,
-          category: '肉类'
+          category: '肉类',
         },
         {
           id: 4,
@@ -50,49 +59,49 @@ const getProducts = async () => {
           description: '包含纸巾、牙膏、洗发水等生活用品',
           price: 69.9,
           stock: 80,
-          category: '生活用品'
-        }
-      ]
-      loading.value = false
-    }, 1000)
+          category: '生活用品',
+        },
+      ];
+      loading.value = false;
+    }, 1000);
   } catch (error) {
-    ElMessage.error('获取商品列表失败，请重试')
-    loading.value = false
+    ElMessage.error('获取商品列表失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const addToCart = (product) => {
-  const existingItem = cart.value.find(item => item.id === product.id)
+  const existingItem = cart.value.find((item) => item.id === product.id);
   if (existingItem) {
-    existingItem.quantity += 1
+    existingItem.quantity += 1;
   } else {
     cart.value.push({
       id: product.id,
       name: product.name,
       price: product.price,
-      quantity: 1
-    })
+      quantity: 1,
+    });
   }
-  ElMessage.success('已添加到购物车')
-}
+  ElMessage.success('已添加到购物车');
+};
 
 const removeFromCart = (index) => {
-  cart.value.splice(index, 1)
-  ElMessage.success('已从购物车移除')
-}
+  cart.value.splice(index, 1);
+  ElMessage.success('已从购物车移除');
+};
 
 const updateQuantity = (item, change) => {
-  if (item.quantity + change < 1) return
-  item.quantity += change
-}
+  if (item.quantity + change < 1) return;
+  item.quantity += change;
+};
 
 const createOrder = async () => {
   if (cart.value.length === 0) {
-    ElMessage.warning('购物车为空，请先添加商品')
-    return
+    ElMessage.warning('购物车为空，请先添加商品');
+    return;
   }
-  
-  loading.value = true
+
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -101,21 +110,21 @@ const createOrder = async () => {
         orderNo: 'ORD' + Date.now(),
         totalAmount: cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
         status: '待支付',
-        createdAt: new Date().toLocaleString()
-      }
-      orders.value.push(newOrder)
-      cart.value = []
-      loading.value = false
-      ElMessage.success('订单创建成功')
-    }, 1000)
+        createdAt: new Date().toLocaleString(),
+      };
+      orders.value.push(newOrder);
+      cart.value = [];
+      loading.value = false;
+      ElMessage.success('订单创建成功');
+    }, 1000);
   } catch (error) {
-    ElMessage.error('创建订单失败，请重试')
-    loading.value = false
+    ElMessage.error('创建订单失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const getOrders = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -125,42 +134,37 @@ const getOrders = async () => {
           orderNo: 'ORD1234567890',
           totalAmount: 99.8,
           status: '已完成',
-          createdAt: '2026-03-07 10:00:00'
+          createdAt: '2026-03-07 10:00:00',
         },
         {
           id: 2,
           orderNo: 'ORD1234567891',
           totalAmount: 59.9,
           status: '待配送',
-          createdAt: '2026-03-08 09:00:00'
-        }
-      ]
-      loading.value = false
-    }, 1000)
+          createdAt: '2026-03-08 09:00:00',
+        },
+      ];
+      loading.value = false;
+    }, 1000);
   } catch (error) {
-    ElMessage.error('获取订单列表失败，请重试')
-    loading.value = false
+    ElMessage.error('获取订单列表失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 onMounted(() => {
-  getProducts()
-  getOrders()
-})
+  getProducts();
+  getOrders();
+});
 </script>
 
 <template>
   <div class="group-purchase-container">
     <div class="page-header">
       <h2>团购商城</h2>
-      <el-button 
-        type="primary" 
-        icon="ShoppingCart"
-        circle
-        size="large"
-      />
+      <el-button type="primary" icon="ShoppingCart" circle size="large" />
     </div>
-    
+
     <el-tabs v-model="activeTab" class="tabs-container">
       <el-tab-pane label="商品列表" name="products">
         <el-card class="search-card" shadow="hover">
@@ -174,11 +178,11 @@ onMounted(() => {
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button 
-                type="primary" 
-                @click="getProducts" 
+              <el-button
+                type="primary"
                 :loading="loading"
                 class="search-button"
+                @click="getProducts"
               >
                 <el-icon><Search /></el-icon>
                 查询
@@ -186,12 +190,12 @@ onMounted(() => {
             </el-form-item>
           </el-form>
         </el-card>
-        
+
         <div class="products-grid" :loading="loading">
-          <el-card 
-            v-for="product in products" 
-            :key="product.id" 
-            class="product-card" 
+          <el-card
+            v-for="product in products"
+            :key="product.id"
+            class="product-card"
             shadow="hover"
           >
             <div class="product-image">
@@ -204,11 +208,7 @@ onMounted(() => {
                 <span class="product-price">¥{{ product.price }}</span>
                 <span class="product-stock">库存：{{ product.stock }}</span>
               </div>
-              <el-button 
-                type="primary" 
-                @click="addToCart(product)"
-                class="add-to-cart-button"
-              >
+              <el-button type="primary" class="add-to-cart-button" @click="addToCart(product)">
                 <el-icon><ShoppingCart /></el-icon>
                 加入购物车
               </el-button>
@@ -216,18 +216,13 @@ onMounted(() => {
           </el-card>
         </div>
       </el-tab-pane>
-      
+
       <el-tab-pane label="购物车" name="cart">
         <div v-if="cart.length === 0" class="empty-cart">
           <el-empty description="购物车为空" />
         </div>
         <div v-else class="cart-container">
-          <el-card 
-            v-for="(item, index) in cart" 
-            :key="item.id" 
-            class="cart-item" 
-            shadow="hover"
-          >
+          <el-card v-for="(item, index) in cart" :key="item.id" class="cart-item" shadow="hover">
             <div class="cart-item-content">
               <div class="cart-item-info">
                 <h4 class="cart-item-name">{{ item.name }}</h4>
@@ -235,29 +230,19 @@ onMounted(() => {
               </div>
               <div class="cart-item-actions">
                 <div class="quantity-control">
-                  <el-button 
-                    type="default" 
-                    size="small" 
-                    @click="updateQuantity(item, -1)"
-                    circle
-                  >
+                  <el-button type="default" size="small" circle @click="updateQuantity(item, -1)">
                     <el-icon><Minus /></el-icon>
                   </el-button>
                   <span class="quantity">{{ item.quantity }}</span>
-                  <el-button 
-                    type="default" 
-                    size="small" 
-                    @click="updateQuantity(item, 1)"
-                    circle
-                  >
+                  <el-button type="default" size="small" circle @click="updateQuantity(item, 1)">
                     <el-icon><Plus /></el-icon>
                   </el-button>
                 </div>
-                <el-button 
-                  type="danger" 
-                  size="small" 
-                  @click="removeFromCart(index)"
+                <el-button
+                  type="danger"
+                  size="small"
                   class="remove-button"
+                  @click="removeFromCart(index)"
                 >
                   <el-icon><Trash /></el-icon>
                   移除
@@ -265,18 +250,20 @@ onMounted(() => {
               </div>
             </div>
           </el-card>
-          
+
           <el-card class="cart-total-card" shadow="hover">
             <div class="cart-total">
               <div class="total-info">
                 <span class="total-label">总计：</span>
-                <span class="total-amount">¥{{ cart.reduce((sum, item) => sum + item.price * item.quantity, 0) }}</span>
+                <span class="total-amount"
+                  >¥{{ cart.reduce((sum, item) => sum + item.price * item.quantity, 0) }}</span
+                >
               </div>
-              <el-button 
-                type="primary" 
-                @click="createOrder" 
+              <el-button
+                type="primary"
                 :loading="loading"
                 class="checkout-button"
+                @click="createOrder"
               >
                 <el-icon><Checkout /></el-icon>
                 提交订单
@@ -285,7 +272,7 @@ onMounted(() => {
           </el-card>
         </div>
       </el-tab-pane>
-      
+
       <el-tab-pane label="我的订单" name="orders">
         <el-card class="orders-card" shadow="hover">
           <template #header>
@@ -303,8 +290,14 @@ onMounted(() => {
             </el-table-column>
             <el-table-column prop="status" label="状态" width="100">
               <template #default="scope">
-                <el-tag 
-                  :type="scope.row.status === '已完成' ? 'success' : scope.row.status === '待配送' ? 'warning' : 'info'"
+                <el-tag
+                  :type="
+                    scope.row.status === '已完成'
+                      ? 'success'
+                      : scope.row.status === '待配送'
+                        ? 'warning'
+                        : 'info'
+                  "
                 >
                   {{ scope.row.status }}
                 </el-tag>
@@ -312,7 +305,7 @@ onMounted(() => {
             </el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="180" />
             <el-table-column label="操作" width="120">
-              <template #default="scope">
+              <template #default>
                 <el-button type="primary" size="small" class="view-button">查看详情</el-button>
               </template>
             </el-table-column>
@@ -449,7 +442,7 @@ onMounted(() => {
 .product-price {
   font-size: 20px;
   font-weight: bold;
-  color: #F56C6C;
+  color: #f56c6c;
 }
 
 .product-stock {
@@ -513,7 +506,7 @@ onMounted(() => {
 .cart-item-price {
   font-size: 18px;
   font-weight: bold;
-  color: #F56C6C;
+  color: #f56c6c;
 }
 
 .cart-item-actions {
@@ -580,7 +573,7 @@ onMounted(() => {
 .total-amount {
   font-size: 24px;
   font-weight: bold;
-  color: #F56C6C;
+  color: #f56c6c;
 }
 
 .checkout-button {
@@ -620,7 +613,7 @@ onMounted(() => {
 
 .order-amount {
   font-weight: bold;
-  color: #F56C6C;
+  color: #f56c6c;
 }
 
 .view-button {
@@ -640,28 +633,28 @@ onMounted(() => {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .products-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .cart-item-content {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
   }
-  
+
   .cart-item-actions {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .cart-total {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
   }
-  
+
   .checkout-button {
     width: 100%;
   }

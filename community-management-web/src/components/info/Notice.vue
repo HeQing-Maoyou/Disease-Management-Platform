@@ -1,18 +1,27 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElEmpty } from 'element-plus'
-import { Message, Search, Clock, HomeFilled, Building, Apartment, CheckCircle, AlertFilled } from '@element-plus/icons-vue'
+import { ref, reactive, onMounted } from 'vue';
+import { ElMessage, ElEmpty } from 'element-plus';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const Message = Icons['Message'] || IconPlaceholder;
+const Search = Icons['Search'] || IconPlaceholder;
+const Clock = Icons['Clock'] || IconPlaceholder;
+const HomeFilled = Icons['HomeFilled'] || IconPlaceholder;
+const Building = Icons['Building'] || IconPlaceholder;
+const Apartment = Icons['Apartment'] || IconPlaceholder;
+const CheckCircle = Icons['CheckCircle'] || IconPlaceholder;
+const AlertFilled = Icons['AlertFilled'] || IconPlaceholder;
 
-const notices = ref([])
+const notices = ref([]);
 const form = reactive({
   communityId: 1,
   building: '1栋',
-  unit: '1单元'
-})
-const loading = ref(false)
+  unit: '1单元',
+});
+const loading = ref(false);
 
 const getNotices = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -25,7 +34,7 @@ const getNotices = async () => {
           building: '',
           unit: '',
           isUrgent: true,
-          createdAt: '2026-03-08 10:00:00'
+          createdAt: '2026-03-08 10:00:00',
         },
         {
           id: 2,
@@ -35,7 +44,7 @@ const getNotices = async () => {
           building: '',
           unit: '',
           isUrgent: false,
-          createdAt: '2026-03-07 15:00:00'
+          createdAt: '2026-03-07 15:00:00',
         },
         {
           id: 3,
@@ -45,50 +54,45 @@ const getNotices = async () => {
           building: '1栋',
           unit: '',
           isUrgent: false,
-          createdAt: '2026-03-06 09:00:00'
-        }
-      ]
-      loading.value = false
-    }, 1000)
+          createdAt: '2026-03-06 09:00:00',
+        },
+      ];
+      loading.value = false;
+    }, 1000);
   } catch (error) {
-    ElMessage.error('获取通知失败，请重试')
-    loading.value = false
+    ElMessage.error('获取通知失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const markAsRead = async (noticeId) => {
   try {
     // 模拟API调用
-    ElMessage.success('标记已读成功')
+    ElMessage.success('标记已读成功');
   } catch (error) {
-    ElMessage.error('标记失败，请重试')
+    ElMessage.error('标记失败，请重试');
   }
-}
+};
 
 onMounted(() => {
-  getNotices()
-})
+  getNotices();
+});
 </script>
 
 <template>
   <div class="notice-container">
     <div class="page-header">
       <h2>通知公告</h2>
-      <el-button 
-        type="primary" 
-        icon="Message"
-        circle
-        size="large"
-      />
+      <el-button type="primary" icon="Message" circle size="large" />
     </div>
-    
+
     <el-card class="search-card" shadow="hover">
       <el-form :model="form" label-width="100px" class="search-form">
         <el-form-item label="社区ID" required>
           <div class="input-with-icon">
             <el-icon class="input-icon"><HomeFilled /></el-icon>
-            <el-input 
-              v-model="form.communityId" 
+            <el-input
+              v-model="form.communityId"
               type="number"
               placeholder="请输入社区ID"
               class="community-input"
@@ -98,44 +102,26 @@ onMounted(() => {
         <el-form-item label="楼栋">
           <div class="input-with-icon">
             <el-icon class="input-icon"><Building /></el-icon>
-            <el-input 
-              v-model="form.building" 
-              placeholder="请输入楼栋号"
-              class="building-input"
-            />
+            <el-input v-model="form.building" placeholder="请输入楼栋号" class="building-input" />
           </div>
         </el-form-item>
         <el-form-item label="单元">
           <div class="input-with-icon">
             <el-icon class="input-icon"><Apartment /></el-icon>
-            <el-input 
-              v-model="form.unit" 
-              placeholder="请输入单元号"
-              class="unit-input"
-            />
+            <el-input v-model="form.unit" placeholder="请输入单元号" class="unit-input" />
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button 
-            type="primary" 
-            @click="getNotices" 
-            :loading="loading"
-            class="search-button"
-          >
+          <el-button type="primary" :loading="loading" class="search-button" @click="getNotices">
             <el-icon><Search /></el-icon>
             查询通知
           </el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    
+
     <div class="notices-list" :loading="loading">
-      <el-card 
-        v-for="notice in notices" 
-        :key="notice.id" 
-        class="notice-card" 
-        shadow="hover"
-      >
+      <el-card v-for="notice in notices" :key="notice.id" class="notice-card" shadow="hover">
         <div class="notice-header">
           <div class="notice-title-container">
             <el-icon v-if="notice.isUrgent" class="urgent-icon"><AlertFilled /></el-icon>
@@ -152,13 +138,16 @@ onMounted(() => {
           <div class="notice-footer">
             <div class="notice-range">
               <el-icon><HomeFilled /></el-icon>
-              <span>{{ notice.building ? notice.building : '全社区' }}{{ notice.unit ? notice.unit : '' }}</span>
+              <span
+                >{{ notice.building ? notice.building : '全社区'
+                }}{{ notice.unit ? notice.unit : '' }}</span
+              >
             </div>
-            <el-button 
-              type="primary" 
-              size="small" 
-              @click="markAsRead(notice.id)"
+            <el-button
+              type="primary"
+              size="small"
               class="read-button"
+              @click="markAsRead(notice.id)"
             >
               <el-icon><CheckCircle /></el-icon>
               标记已读
@@ -166,7 +155,7 @@ onMounted(() => {
           </div>
         </div>
       </el-card>
-      
+
       <div v-if="notices.length === 0 && !loading" class="empty-notice">
         <el-empty description="暂无通知" />
       </div>
@@ -275,7 +264,7 @@ onMounted(() => {
 
 .urgent-icon {
   font-size: 20px;
-  color: #F56C6C;
+  color: #f56c6c;
   flex-shrink: 0;
 }
 
@@ -354,35 +343,35 @@ onMounted(() => {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .input-with-icon {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .community-input,
   .building-input,
   .unit-input {
     width: 100%;
   }
-  
+
   .search-button {
     width: 100%;
   }
-  
+
   .notice-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .notice-footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .read-button {
     width: 100%;
   }

@@ -1,35 +1,35 @@
-import axios from 'axios'
+import axios from 'axios';
 
 // 创建axios实例
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json'
-  }
-})
+    'Content-Type': 'application/json',
+  },
+});
 
 // 请求拦截器
 request.interceptors.request.use(
-  config => {
+  (config) => {
     // 可以在这里添加token等认证信息
-    return config
+    return config;
   },
-  error => {
-    console.error('请求错误:', error)
-    return Promise.reject(error)
+  (error) => {
+    console.error('请求错误:', error);
+    return Promise.reject(error);
   }
-)
+);
 
 // 响应拦截器
 request.interceptors.response.use(
-  response => {
-    return response
+  (response) => {
+    return response;
   },
-  error => {
-    console.error('响应错误:', error)
-    return Promise.reject(error)
+  (error) => {
+    console.error('响应错误:', error);
+    return Promise.reject(error);
   }
-)
+);
 
-export default request
+export default request;

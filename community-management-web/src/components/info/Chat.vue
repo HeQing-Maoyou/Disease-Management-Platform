@@ -1,29 +1,44 @@
 <script setup>
-import { ref, reactive, onMounted, nextTick } from 'vue'
-import axios from 'axios'
-import { ElMessage } from 'element-plus'
+import { ref, reactive, onMounted, nextTick } from 'vue';
+import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
-const messages = ref([])
+const messages = ref([]);
 const form = reactive({
   receiverId: 2, // 默认为网格员
-  content: ''
-})
-const loading = ref(false)
-const messagesContainer = ref(null)
+  content: '',
+});
+const loading = ref(false);
+const messagesContainer = ref(null);
 
 const contacts = [
-  { id: 2, name: '社区网格员', avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20community%20worker%20avatar&image_size=square' },
-  { id: 3, name: '邻居小王', avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friendly%20neighbor%20avatar&image_size=square' },
-  { id: 4, name: '邻居小李', avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20person%20avatar&image_size=square' }
-]
+  {
+    id: 2,
+    name: '社区网格员',
+    avatar:
+      'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20community%20worker%20avatar&image_size=square',
+  },
+  {
+    id: 3,
+    name: '邻居小王',
+    avatar:
+      'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friendly%20neighbor%20avatar&image_size=square',
+  },
+  {
+    id: 4,
+    name: '邻居小李',
+    avatar:
+      'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20person%20avatar&image_size=square',
+  },
+];
 
 const sendMessage = async () => {
   if (!form.content) {
-    ElMessage.warning('请输入消息内容')
-    return
+    ElMessage.warning('请输入消息内容');
+    return;
   }
-  
-  loading.value = true
+
+  loading.value = true;
   try {
     // 模拟API调用
     // const response = await axios.post('/api/chat/messages', {
@@ -32,7 +47,7 @@ const sendMessage = async () => {
     //   content: form.content
     // })
     // messages.value.push(response.data.data)
-    
+
     // 模拟成功响应
     setTimeout(() => {
       const newMessage = {
@@ -41,21 +56,21 @@ const sendMessage = async () => {
         receiverId: form.receiverId,
         content: form.content,
         sendTime: new Date().toLocaleString(),
-        readStatus: false
-      }
-      messages.value.push(newMessage)
-      form.content = ''
-      loading.value = false
-      scrollToBottom()
-    }, 500)
+        readStatus: false,
+      };
+      messages.value.push(newMessage);
+      form.content = '';
+      loading.value = false;
+      scrollToBottom();
+    }, 500);
   } catch (error) {
-    ElMessage.error('发送消息失败，请重试')
-    loading.value = false
+    ElMessage.error('发送消息失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const getMessages = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     // const response = await axios.get('/api/chat/messages', {
@@ -67,7 +82,7 @@ const getMessages = async () => {
     //   }
     // })
     // messages.value = response.data.data.records
-    
+
     // 模拟成功响应
     setTimeout(() => {
       messages.value = [
@@ -77,7 +92,7 @@ const getMessages = async () => {
           receiverId: 1,
           content: '您好，请问有什么可以帮助您的？',
           sendTime: '2026-03-08 09:00:00',
-          readStatus: true
+          readStatus: true,
         },
         {
           id: 2,
@@ -85,7 +100,7 @@ const getMessages = async () => {
           receiverId: 2,
           content: '我想咨询一下核酸检测的时间安排',
           sendTime: '2026-03-08 09:05:00',
-          readStatus: true
+          readStatus: true,
         },
         {
           id: 3,
@@ -93,33 +108,33 @@ const getMessages = async () => {
           receiverId: 1,
           content: '核酸检测时间是明天上午8点到12点，在社区广场进行',
           sendTime: '2026-03-08 09:10:00',
-          readStatus: false
-        }
-      ]
-      loading.value = false
-      scrollToBottom()
-    }, 1000)
+          readStatus: false,
+        },
+      ];
+      loading.value = false;
+      scrollToBottom();
+    }, 1000);
   } catch (error) {
-    ElMessage.error('获取消息失败，请重试')
-    loading.value = false
+    ElMessage.error('获取消息失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const handleContactChange = () => {
-  getMessages()
-}
+  getMessages();
+};
 
 const scrollToBottom = () => {
   nextTick(() => {
     if (messagesContainer.value) {
-      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
     }
-  })
-}
+  });
+};
 
 onMounted(() => {
-  getMessages()
-})
+  getMessages();
+});
 </script>
 
 <template>
@@ -134,19 +149,22 @@ onMounted(() => {
             </div>
           </template>
           <div class="contacts-list">
-            <div 
-              v-for="contact in contacts" 
-              :key="contact.id" 
-              class="contact-item" 
+            <div
+              v-for="contact in contacts"
+              :key="contact.id"
+              class="contact-item"
               :class="form.receiverId === contact.id ? 'active' : ''"
-              @click="form.receiverId = contact.id; handleContactChange()"
+              @click="
+                form.receiverId = contact.id;
+                handleContactChange();
+              "
             >
               <div class="contact-avatar">
-                <img :src="contact.avatar" :alt="contact.name">
+                <img :src="contact.avatar" :alt="contact.name" />
               </div>
               <div class="contact-info">
                 <div class="contact-name">{{ contact.name }}</div>
-                <div class="contact-status" v-if="form.receiverId === contact.id">
+                <div v-if="form.receiverId === contact.id" class="contact-status">
                   <span class="status-dot online"></span>
                   <span class="status-text">在线</span>
                 </div>
@@ -160,7 +178,7 @@ onMounted(() => {
           <template #header>
             <div class="card-header">
               <div class="chat-header-info">
-                <h3>{{ contacts.find(c => c.id === form.receiverId)?.name }}</h3>
+                <h3>{{ contacts.find((c) => c.id === form.receiverId)?.name }}</h3>
                 <div class="status-indicator">
                   <span class="status-dot online"></span>
                   <span class="status-text">在线</span>
@@ -168,22 +186,18 @@ onMounted(() => {
               </div>
             </div>
           </template>
-          <div 
-            ref="messagesContainer" 
-            class="chat-messages" 
-            :class="{ loading: loading }"
-          >
-            <div 
-              v-for="message in messages" 
-              :key="message.id" 
-              class="message-item" 
+          <div ref="messagesContainer" class="chat-messages" :class="{ loading: loading }">
+            <div
+              v-for="message in messages"
+              :key="message.id"
+              class="message-item"
               :class="message.senderId === 1 ? 'sent' : 'received'"
             >
-              <div class="message-avatar" v-if="message.senderId !== 1">
-                <img 
-                  :src="contacts.find(c => c.id === message.senderId)?.avatar" 
-                  :alt="contacts.find(c => c.id === message.senderId)?.name"
-                >
+              <div v-if="message.senderId !== 1" class="message-avatar">
+                <img
+                  :src="contacts.find((c) => c.id === message.senderId)?.avatar"
+                  :alt="contacts.find((c) => c.id === message.senderId)?.name"
+                />
               </div>
               <div class="message-content-wrapper">
                 <div class="message-content">
@@ -196,11 +210,11 @@ onMounted(() => {
                   </div>
                 </div>
               </div>
-              <div class="message-avatar" v-if="message.senderId === 1">
-                <img 
-                  src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=user%20avatar&image_size=square" 
+              <div v-if="message.senderId === 1" class="message-avatar">
+                <img
+                  src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=user%20avatar&image_size=square"
                   alt="我"
-                >
+                />
               </div>
             </div>
             <div v-if="messages.length === 0" class="empty-messages">
@@ -208,20 +222,20 @@ onMounted(() => {
             </div>
           </div>
           <div class="chat-input">
-            <el-input 
-              v-model="form.content" 
-              type="textarea" 
-              placeholder="输入消息..." 
+            <el-input
+              v-model="form.content"
+              type="textarea"
+              placeholder="输入消息..."
               rows="3"
               resize="none"
               class="message-textarea"
             />
-            <el-button 
-              type="primary" 
-              @click="sendMessage" 
+            <el-button
+              type="primary"
               :loading="loading"
               class="send-button"
               round
+              @click="sendMessage"
             >
               发送
             </el-button>
@@ -531,26 +545,26 @@ onMounted(() => {
   .chat-container {
     min-height: 500px;
   }
-  
+
   .el-row {
     flex-direction: column;
   }
-  
+
   .el-col {
     width: 100% !important;
     margin-bottom: 20px;
   }
-  
+
   .contacts-card {
     height: auto;
   }
-  
+
   .contacts-list {
     display: flex;
     overflow-x: auto;
     gap: 12px;
   }
-  
+
   .contact-item {
     flex-direction: column;
     align-items: center;
@@ -558,24 +572,24 @@ onMounted(() => {
     min-width: 100px;
     text-align: center;
   }
-  
+
   .contact-avatar {
     margin-right: 0;
     margin-bottom: 8px;
   }
-  
+
   .contact-info {
     text-align: center;
   }
-  
+
   .message-content-wrapper {
     max-width: 85%;
   }
-  
+
   .chat-messages {
     padding: 16px;
   }
-  
+
   .chat-input {
     padding: 0 16px 16px;
   }

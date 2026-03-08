@@ -1,31 +1,41 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElEmpty } from 'element-plus'
-import { HelpFilled, Send, List, User, Phone, Clock, CheckCircle, AlertCircle, Edit } from '@element-plus/icons-vue'
+import { ref, reactive, onMounted } from 'vue';
+import { ElMessage, ElEmpty } from 'element-plus';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const HelpFilled = Icons['HelpFilled'] || IconPlaceholder;
+const Send = Icons['Send'] || IconPlaceholder;
+const List = Icons['List'] || IconPlaceholder;
+const User = Icons['User'] || IconPlaceholder;
+const Phone = Icons['Phone'] || IconPlaceholder;
+const Clock = Icons['Clock'] || IconPlaceholder;
+const CheckCircle = Icons['CheckCircle'] || IconPlaceholder;
+const AlertCircle = Icons['AlertCircle'] || IconPlaceholder;
+const Edit = Icons['Edit'] || IconPlaceholder;
 
-const helps = ref([])
+const helps = ref([]);
 const form = reactive({
   type: '',
   content: '',
-  contactInfo: ''
-})
-const loading = ref(false)
-const activeTab = ref('list')
+  contactInfo: '',
+});
+const loading = ref(false);
+const activeTab = ref('list');
 
 const helpTypes = [
   { label: '物资交换', value: '物资交换' },
   { label: '志愿者招募', value: '志愿者招募' },
   { label: '寻求帮助', value: '寻求帮助' },
-  { label: '其他', value: '其他' }
-]
+  { label: '其他', value: '其他' },
+];
 
 const publishHelp = async () => {
   if (!form.type || !form.content || !form.contactInfo) {
-    ElMessage.warning('请填写完整信息')
-    return
+    ElMessage.warning('请填写完整信息');
+    return;
   }
-  
-  loading.value = true
+
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -36,23 +46,23 @@ const publishHelp = async () => {
         content: form.content,
         contactInfo: form.contactInfo,
         status: '待解决',
-        createdAt: new Date().toLocaleString()
-      }
-      helps.value.unshift(newHelp)
-      form.type = ''
-      form.content = ''
-      form.contactInfo = ''
-      loading.value = false
-      ElMessage.success('发布成功')
-    }, 1000)
+        createdAt: new Date().toLocaleString(),
+      };
+      helps.value.unshift(newHelp);
+      form.type = '';
+      form.content = '';
+      form.contactInfo = '';
+      loading.value = false;
+      ElMessage.success('发布成功');
+    }, 1000);
   } catch (error) {
-    ElMessage.error('发布失败，请重试')
-    loading.value = false
+    ElMessage.error('发布失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const getHelpList = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -64,7 +74,7 @@ const getHelpList = async () => {
           content: '我有多余的口罩，需要的邻居可以联系我',
           contactInfo: '13800138001',
           status: '待解决',
-          createdAt: '2026-03-08 09:00:00'
+          createdAt: '2026-03-08 09:00:00',
         },
         {
           id: 2,
@@ -73,61 +83,60 @@ const getHelpList = async () => {
           content: '社区需要志愿者协助物资配送，有意者请联系',
           contactInfo: '13800138002',
           status: '待解决',
-          createdAt: '2026-03-07 18:00:00'
-        }
-      ]
-      loading.value = false
-    }, 1000)
+          createdAt: '2026-03-07 18:00:00',
+        },
+      ];
+      loading.value = false;
+    }, 1000);
   } catch (error) {
-    ElMessage.error('获取互助信息失败，请重试')
-    loading.value = false
+    ElMessage.error('获取互助信息失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const updateHelpStatus = async (helpId, status) => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
-      const help = helps.value.find(item => item.id === helpId)
+      const help = helps.value.find((item) => item.id === helpId);
       if (help) {
-        help.status = status
+        help.status = status;
       }
-      loading.value = false
-      ElMessage.success('状态更新成功')
-    }, 1000)
+      loading.value = false;
+      ElMessage.success('状态更新成功');
+    }, 1000);
   } catch (error) {
-    ElMessage.error('状态更新失败，请重试')
-    loading.value = false
+    ElMessage.error('状态更新失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const getStatusType = (status) => {
   switch (status) {
-    case '已解决': return 'success'
-    case '待解决': return 'warning'
-    case '已关闭': return 'info'
-    default: return 'info'
+    case '已解决':
+      return 'success';
+    case '待解决':
+      return 'warning';
+    case '已关闭':
+      return 'info';
+    default:
+      return 'info';
   }
-}
+};
 
 onMounted(() => {
-  getHelpList()
-})
+  getHelpList();
+});
 </script>
 
 <template>
   <div class="community-help-container">
     <div class="page-header">
       <h2>社区互助大厅</h2>
-      <el-button 
-        type="primary" 
-        icon="HelpFilled"
-        circle
-        size="large"
-      />
+      <el-button type="primary" icon="HelpFilled" circle size="large" />
     </div>
-    
+
     <el-tabs v-model="activeTab" class="tabs-container">
       <el-tab-pane label="发布互助" name="publish">
         <el-card class="publish-card" shadow="hover">
@@ -141,16 +150,12 @@ onMounted(() => {
             <el-form-item label="互助类型" required>
               <div class="input-with-icon">
                 <el-icon class="input-icon"><HelpFilled /></el-icon>
-                <el-select 
-                  v-model="form.type" 
-                  placeholder="请选择互助类型"
-                  class="type-select"
-                >
-                  <el-option 
-                    v-for="type in helpTypes" 
-                    :key="type.value" 
-                    :label="type.label" 
-                    :value="type.value" 
+                <el-select v-model="form.type" placeholder="请选择互助类型" class="type-select">
+                  <el-option
+                    v-for="type in helpTypes"
+                    :key="type.value"
+                    :label="type.label"
+                    :value="type.value"
                   />
                 </el-select>
               </div>
@@ -158,10 +163,10 @@ onMounted(() => {
             <el-form-item label="互助内容" required>
               <div class="input-with-icon">
                 <el-icon class="input-icon"><AlertCircle /></el-icon>
-                <el-input 
-                  v-model="form.content" 
-                  type="textarea" 
-                  placeholder="请描述您的互助需求或提供的帮助" 
+                <el-input
+                  v-model="form.content"
+                  type="textarea"
+                  placeholder="请描述您的互助需求或提供的帮助"
                   rows="4"
                   class="content-input"
                 />
@@ -170,19 +175,19 @@ onMounted(() => {
             <el-form-item label="联系方式" required>
               <div class="input-with-icon">
                 <el-icon class="input-icon"><Phone /></el-icon>
-                <el-input 
-                  v-model="form.contactInfo" 
+                <el-input
+                  v-model="form.contactInfo"
                   placeholder="请留下您的联系方式，如电话、微信等"
                   class="contact-input"
                 />
               </div>
             </el-form-item>
             <el-form-item>
-              <el-button 
-                type="primary" 
-                @click="publishHelp" 
+              <el-button
+                type="primary"
                 :loading="loading"
                 class="publish-button"
+                @click="publishHelp"
               >
                 <el-icon><Send /></el-icon>
                 发布互助
@@ -191,17 +196,24 @@ onMounted(() => {
           </el-form>
         </el-card>
       </el-tab-pane>
-      
+
       <el-tab-pane label="互助列表" name="list">
         <div class="help-list" :loading="loading">
-          <el-card 
-            v-for="help in helps" 
-            :key="help.id" 
-            class="help-card" 
-            shadow="hover"
-          >
+          <el-card v-for="help in helps" :key="help.id" class="help-card" shadow="hover">
             <div class="help-header">
-              <div class="help-type-badge" :style="{ backgroundColor: help.type === '物资交换' ? '#67C23A' : help.type === '志愿者招募' ? '#1890ff' : help.type === '寻求帮助' ? '#E6A23C' : '#909399' }">
+              <div
+                class="help-type-badge"
+                :style="{
+                  backgroundColor:
+                    help.type === '物资交换'
+                      ? '#67C23A'
+                      : help.type === '志愿者招募'
+                        ? '#1890ff'
+                        : help.type === '寻求帮助'
+                          ? '#E6A23C'
+                          : '#909399',
+                }"
+              >
                 {{ help.type }}
               </div>
               <el-tag :type="getStatusType(help.status)">
@@ -221,11 +233,11 @@ onMounted(() => {
                 </div>
               </div>
               <div class="help-actions">
-                <el-select 
-                  v-model="help.status" 
-                  @change="updateHelpStatus(help.id, help.status)" 
+                <el-select
+                  v-model="help.status"
                   placeholder="更新状态"
                   class="status-select"
+                  @change="updateHelpStatus(help.id, help.status)"
                 >
                   <el-option label="待解决" value="待解决" />
                   <el-option label="已解决" value="已解决" />
@@ -234,7 +246,7 @@ onMounted(() => {
               </div>
             </div>
           </el-card>
-          
+
           <div v-if="helps.length === 0 && !loading" class="empty-help">
             <el-empty description="暂无互助信息" />
           </div>
@@ -420,34 +432,34 @@ onMounted(() => {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .input-with-icon {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .type-select,
   .contact-input,
   .content-input {
     width: 100%;
     min-width: unset;
   }
-  
+
   .publish-button {
     width: 100%;
   }
-  
+
   .help-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .help-actions {
     justify-content: flex-start;
   }
-  
+
   .status-select {
     width: 100%;
   }

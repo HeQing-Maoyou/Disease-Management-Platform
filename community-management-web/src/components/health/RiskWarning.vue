@@ -1,23 +1,33 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Warning, Search, HomeFilled, Building, Apartment, ShieldCheck, AlertCircle, Clock, Location } from '@element-plus/icons-vue'
+import { ref, reactive, onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const Warning = Icons['Warning'] || IconPlaceholder;
+const Search = Icons['Search'] || IconPlaceholder;
+const HomeFilled = Icons['HomeFilled'] || IconPlaceholder;
+const Building = Icons['Building'] || IconPlaceholder;
+const Apartment = Icons['Apartment'] || IconPlaceholder;
+const ShieldCheck = Icons['ShieldCheck'] || IconPlaceholder;
+const AlertCircle = Icons['AlertCircle'] || IconPlaceholder;
+const Clock = Icons['Clock'] || IconPlaceholder;
+const Location = Icons['Location'] || IconPlaceholder;
 
 const riskInfo = ref({
   riskLevel: '低风险',
   quarantineCountdown: '0天',
   riskArea: '',
-  riskMessage: '该区域暂无风险，请注意日常防护'
-})
+  riskMessage: '该区域暂无风险，请注意日常防护',
+});
 const form = reactive({
   communityId: 1,
   building: '1栋',
-  unit: '1单元'
-})
-const loading = ref(false)
+  unit: '1单元',
+});
+const loading = ref(false);
 
 const getRiskLevel = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
@@ -26,110 +36,98 @@ const getRiskLevel = async () => {
           riskLevel: '高风险',
           quarantineCountdown: '3天',
           riskArea: '1栋1单元',
-          riskMessage: '该区域存在确诊病例，请严格执行隔离措施'
-        }
+          riskMessage: '该区域存在确诊病例，请严格执行隔离措施',
+        };
       } else if (form.communityId === 1 && form.building === '2栋') {
         riskInfo.value = {
           riskLevel: '中风险',
           quarantineCountdown: '0天',
           riskArea: '2栋',
-          riskMessage: '该区域存在密切接触者，请注意防护'
-        }
+          riskMessage: '该区域存在密切接触者，请注意防护',
+        };
       } else {
         riskInfo.value = {
           riskLevel: '低风险',
           quarantineCountdown: '0天',
           riskArea: '',
-          riskMessage: '该区域暂无风险，请注意日常防护'
-        }
+          riskMessage: '该区域暂无风险，请注意日常防护',
+        };
       }
-      loading.value = false
-    }, 1000)
+      loading.value = false;
+    }, 1000);
   } catch (error) {
-    ElMessage.error('获取风险等级失败，请重试')
-    loading.value = false
+    ElMessage.error('获取风险等级失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const getRiskColor = () => {
   switch (riskInfo.value.riskLevel) {
-    case '高风险': return '#F56C6C'
-    case '中风险': return '#E6A23C'
-    case '低风险': return '#67C23A'
-    default: return '#67C23A'
+    case '高风险':
+      return '#F56C6C';
+    case '中风险':
+      return '#E6A23C';
+    case '低风险':
+      return '#67C23A';
+    default:
+      return '#67C23A';
   }
-}
+};
 
 const getRiskIcon = () => {
   switch (riskInfo.value.riskLevel) {
-    case '高风险': return 'AlertCircle'
-    case '中风险': return 'Warning'
-    case '低风险': return 'ShieldCheck'
-    default: return 'ShieldCheck'
+    case '高风险':
+      return 'AlertCircle';
+    case '中风险':
+      return 'Warning';
+    case '低风险':
+      return 'ShieldCheck';
+    default:
+      return 'ShieldCheck';
   }
-}
+};
 
 onMounted(() => {
-  getRiskLevel()
-})
+  getRiskLevel();
+});
 </script>
 
 <template>
   <div class="risk-warning-container">
     <div class="page-header">
       <h2>风险预警</h2>
-      <el-button 
-        type="info" 
-        icon="Warning"
-        circle
-        size="large"
-      />
+      <el-button type="info" icon="Warning" circle size="large" />
     </div>
-    
+
     <el-card class="search-card" shadow="hover">
       <el-form :model="form" label-width="100px" class="search-form">
         <el-form-item label="社区ID" required>
           <div class="input-with-icon">
             <el-icon class="input-icon"><HomeFilled /></el-icon>
-            <el-input 
-              v-model="form.communityId" 
-              type="number"
-              placeholder="请输入社区ID"
-            />
+            <el-input v-model="form.communityId" type="number" placeholder="请输入社区ID" />
           </div>
         </el-form-item>
         <el-form-item label="楼栋" required>
           <div class="input-with-icon">
             <el-icon class="input-icon"><Building /></el-icon>
-            <el-input 
-              v-model="form.building" 
-              placeholder="请输入楼栋号"
-            />
+            <el-input v-model="form.building" placeholder="请输入楼栋号" />
           </div>
         </el-form-item>
         <el-form-item label="单元">
           <div class="input-with-icon">
             <el-icon class="input-icon"><Apartment /></el-icon>
-            <el-input 
-              v-model="form.unit" 
-              placeholder="请输入单元号"
-            />
+            <el-input v-model="form.unit" placeholder="请输入单元号" />
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button 
-            type="primary" 
-            @click="getRiskLevel" 
-            :loading="loading"
-            class="search-button"
-          >
+          <el-button type="primary" :loading="loading" class="search-button" @click="getRiskLevel">
             <el-icon><Search /></el-icon>
             查询风险等级
           </el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    
+
     <el-card class="risk-info-card" shadow="hover" :loading="loading">
       <template #header>
         <div class="card-header">
@@ -145,7 +143,7 @@ onMounted(() => {
             <p>{{ riskInfo.riskMessage }}</p>
           </div>
         </div>
-        
+
         <div class="risk-details">
           <div class="risk-item">
             <el-icon class="detail-icon"><Clock /></el-icon>
@@ -253,7 +251,7 @@ onMounted(() => {
   gap: 20px;
   padding: 24px;
   background-color: #f9f9f9;
-  border-left: 4px solid #67C23A;
+  border-left: 4px solid #67c23a;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
@@ -340,23 +338,23 @@ onMounted(() => {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .input-with-icon {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .risk-header {
     flex-direction: column;
     text-align: center;
     gap: 16px;
   }
-  
+
   .risk-icon {
     font-size: 32px;
   }
-  
+
   .risk-level-info h3 {
     font-size: 20px;
   }

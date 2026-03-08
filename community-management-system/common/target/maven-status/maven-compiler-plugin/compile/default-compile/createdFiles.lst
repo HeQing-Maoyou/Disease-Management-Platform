@@ -1,0 +1,13 @@
+com\community\common\entity\Order.class
+com\community\common\entity\NucleicAcidTest.class
+com\community\common\result\ResultCode.class
+com\community\common\entity\HealthCode.class
+com\community\common\result\ResponseResult.class
+com\community\common\entity\User.class
+com\community\common\entity\HealthCheckin.class
+com\community\common\entity\CommunityHelp.class
+com\community\common\entity\GroupPurchaseProduct.class
+com\community\common\entity\OrderItem.class
+com\community\common\entity\QuarantineService.class
+com\community\common\entity\CommunityNotice.class
+com\community\common\entity\Message.class

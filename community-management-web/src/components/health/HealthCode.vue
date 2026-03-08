@@ -1,92 +1,95 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
-import { View, Refresh, UserFilled, Calendar, Clock, InfoFilled } from '@element-plus/icons-vue'
+import { ref, onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import * as Icons from '@element-plus/icons-vue';
+const IconPlaceholder = { template: '<span></span>' };
+const View = Icons['View'] || IconPlaceholder;
+const Refresh = Icons['Refresh'] || IconPlaceholder;
+const UserFilled = Icons['UserFilled'] || IconPlaceholder;
+const Calendar = Icons['Calendar'] || IconPlaceholder;
+const Clock = Icons['Clock'] || IconPlaceholder;
+const InfoFilled = Icons['InfoFilled'] || IconPlaceholder;
 
 const healthCode = ref({
   codeType: '绿码',
   validUntil: '2026-03-15',
-  lastUpdate: '2026-03-08 08:00:00'
-})
-const proxyUser = ref('')
-const loading = ref(false)
+  lastUpdate: '2026-03-08 08:00:00',
+});
+const proxyUser = ref('');
+const loading = ref(false);
 
 const getHealthCode = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
       healthCode.value = {
         codeType: '绿码',
         validUntil: '2026-03-15',
-        lastUpdate: '2026-03-08 08:00:00'
-      }
-      loading.value = false
-    }, 1000)
+        lastUpdate: '2026-03-08 08:00:00',
+      };
+      loading.value = false;
+    }, 1000);
   } catch (error) {
-    ElMessage.error('获取健康码失败，请重试')
-    loading.value = false
+    ElMessage.error('获取健康码失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const proxyHealthCode = async () => {
   if (!proxyUser.value) {
-    ElMessage.warning('请输入被代办人ID')
-    return
+    ElMessage.warning('请输入被代办人ID');
+    return;
   }
-  
-  loading.value = true
+
+  loading.value = true;
   try {
     // 模拟API调用
     setTimeout(() => {
       healthCode.value = {
         codeType: '绿码',
         validUntil: '2026-03-15',
-        lastUpdate: '2026-03-08 08:00:00'
-      }
-      loading.value = false
-      ElMessage.success('亲属代办成功')
-    }, 1000)
+        lastUpdate: '2026-03-08 08:00:00',
+      };
+      loading.value = false;
+      ElMessage.success('亲属代办成功');
+    }, 1000);
   } catch (error) {
-    ElMessage.error('代办失败，请重试')
-    loading.value = false
+    ElMessage.error('代办失败，请重试');
+    loading.value = false;
   }
-}
+};
 
 const getHealthCodeColor = () => {
   switch (healthCode.value.codeType) {
-    case '绿码': return '#67C23A'
-    case '黄码': return '#E6A23C'
-    case '红码': return '#F56C6C'
-    default: return '#67C23A'
+    case '绿码':
+      return '#67C23A';
+    case '黄码':
+      return '#E6A23C';
+    case '红码':
+      return '#F56C6C';
+    default:
+      return '#67C23A';
   }
-}
+};
 
 onMounted(() => {
-  getHealthCode()
-})
+  getHealthCode();
+});
 </script>
 
 <template>
   <div class="health-code-container">
     <div class="page-header">
       <h2>健康码管理</h2>
-      <el-button 
-        type="primary" 
-        @click="getHealthCode" 
-        :loading="loading"
-        icon="Refresh"
-      >
+      <el-button type="primary" :loading="loading" icon="Refresh" @click="getHealthCode">
         刷新
       </el-button>
     </div>
-    
+
     <el-card class="health-code-card" shadow="hover" :loading="loading">
       <div class="health-code-content">
-        <div 
-          class="health-code-status" 
-          :style="{ backgroundColor: getHealthCodeColor() }"
-        >
+        <div class="health-code-status" :style="{ backgroundColor: getHealthCodeColor() }">
           <el-icon class="health-code-icon"><View /></el-icon>
           <span>{{ healthCode.codeType }}</span>
           <div class="code-pattern"></div>
@@ -107,8 +110,8 @@ onMounted(() => {
         </div>
       </div>
     </el-card>
-    
-    <el-card class="proxy-section" shadow="hover" style="margin-top: 24px;">
+
+    <el-card class="proxy-section" shadow="hover" style="margin-top: 24px">
       <template #header>
         <div class="proxy-header">
           <el-icon><UserFilled /></el-icon>
@@ -117,18 +120,14 @@ onMounted(() => {
       </template>
       <el-form :model="{ proxyUser }" label-width="120px" class="proxy-form">
         <el-form-item label="被代办人ID" required>
-          <el-input 
-            v-model="proxyUser" 
-            placeholder="请输入被代办人ID"
-            class="proxy-input"
-          />
+          <el-input v-model="proxyUser" placeholder="请输入被代办人ID" class="proxy-input" />
         </el-form-item>
         <el-form-item>
-          <el-button 
-            type="primary" 
-            @click="proxyHealthCode" 
+          <el-button
+            type="primary"
             :loading="loading"
             class="proxy-button"
+            @click="proxyHealthCode"
           >
             代办健康码
           </el-button>
@@ -237,7 +236,16 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 40px;
-  background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    transparent 75%,
+    transparent
+  );
   background-size: 20px 20px;
   animation: pattern-move 10s linear infinite;
 }
@@ -351,24 +359,24 @@ onMounted(() => {
     text-align: center;
     gap: 24px;
   }
-  
+
   .health-code-status {
     width: 160px;
     height: 160px;
   }
-  
+
   .health-code-icon {
     font-size: 48px;
   }
-  
+
   .health-code-status span {
     font-size: 28px;
   }
-  
+
   .proxy-input {
     width: 100%;
   }
-  
+
   .page-header {
     flex-direction: column;
     align-items: flex-start;
