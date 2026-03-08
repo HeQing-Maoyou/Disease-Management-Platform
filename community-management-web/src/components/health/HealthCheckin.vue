@@ -1,7 +1,12 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
-import { Thermometer, AlertCircle, CheckCircle, Clock } from '@element-plus/icons-vue'
+import * as Icons from '@element-plus/icons-vue'
+const IconPlaceholder = { template: '<span></span>' }
+const Thermometer = Icons.Thermometer || IconPlaceholder
+const AlertCircle = Icons.AlertCircle || IconPlaceholder
+const CheckCircle = Icons.CheckCircle || IconPlaceholder
+const Clock = Icons.Clock || IconPlaceholder
 
 const loading = ref(false)
 const successMessage = ref('')

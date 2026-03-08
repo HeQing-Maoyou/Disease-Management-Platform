@@ -1,7 +1,16 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { House, HomeFilled, Sunny, GoodsFilled, MessageFilled, UserFilled } from '@element-plus/icons-vue'
+import * as Icons from '@element-plus/icons-vue'
+
+// 提供图标回退，避免某些版本的 icons 包不导出特定命名导致构建失败
+const IconPlaceholder = { template: '<span></span>' }
+const House = Icons.House || IconPlaceholder
+const HomeFilled = Icons.HomeFilled || IconPlaceholder
+const Sunny = Icons.Sunny || IconPlaceholder
+const GoodsFilled = Icons.GoodsFilled || Icons.Shopping || IconPlaceholder
+const MessageFilled = Icons.MessageFilled || Icons.Message || IconPlaceholder
+const UserFilled = Icons.UserFilled || Icons.User || IconPlaceholder
 
 const router = useRouter()
 const activeIndex = ref('/')
