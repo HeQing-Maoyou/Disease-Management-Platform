@@ -1,0 +1,12 @@
+com\community\health\mapper\HealthCheckinMapper.class
+com\community\health\service\HealthCodeService.class
+com\community\health\service\HealthCheckinService.class
+com\community\health\HealthServiceApplication.class
+com\community\health\mapper\HealthCodeMapper.class
+com\community\health\controller\HealthCodeController.class
+com\community\health\service\impl\HealthCodeServiceImpl.class
+com\community\health\service\RiskService.class
+com\community\health\service\impl\RiskServiceImpl.class
+com\community\health\service\impl\HealthCheckinServiceImpl.class
+com\community\health\controller\HealthCheckinController.class
+com\community\health\controller\RiskController.class

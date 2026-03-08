@@ -1,0 +1,12 @@
+com\community\info\service\impl\NoticeServiceImpl.class
+com\community\info\controller\ChatController.class
+com\community\info\service\ChatService.class
+com\community\info\service\impl\ChatServiceImpl.class
+com\community\info\mapper\CommunityNoticeMapper.class
+com\community\info\mapper\MessageMapper.class
+com\community\info\service\NoticeService.class
+com\community\info\InfoServiceApplication.class
+com\community\info\controller\MapController.class
+com\community\info\service\MapService.class
+com\community\info\service\impl\MapServiceImpl.class
+com\community\info\controller\NoticeController.class

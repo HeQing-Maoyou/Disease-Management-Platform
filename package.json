@@ -1,0 +1,15 @@
+{
+  "name": "disease-management-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "web:install": "cd \"community-management-web\" && npm install",
+    "web:dev": "cd \"community-management-web\" && npm run dev",
+    "web:build": "cd \"community-management-web\" && npm run build",
+    "backend:build": "cd \"community-management-system\" && mvn -DskipTests package",
+    "backend:run": "cd \"community-management-system\" && mvn spring-boot:run -pl eureka-server -am"
+  },
+  "description": "Monorepo helper scripts for local development",
+  "author": "",
+  "license": "MIT"
+}

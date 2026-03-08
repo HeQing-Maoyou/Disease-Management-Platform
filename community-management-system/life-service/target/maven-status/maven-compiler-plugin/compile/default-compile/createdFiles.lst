@@ -1,0 +1,15 @@
+com\community\life\mapper\OrderMapper.class
+com\community\life\mapper\CommunityHelpMapper.class
+com\community\life\service\CommunityHelpService.class
+com\community\life\service\impl\QuarantineServiceImpl.class
+com\community\life\service\QuarantineService.class
+com\community\life\mapper\GroupPurchaseProductMapper.class
+com\community\life\controller\GroupPurchaseController.class
+com\community\life\LifeServiceApplication.class
+com\community\life\service\impl\GroupPurchaseServiceImpl.class
+com\community\life\controller\CommunityHelpController.class
+com\community\life\service\GroupPurchaseService.class
+com\community\life\controller\QuarantineController.class
+com\community\life\service\impl\CommunityHelpServiceImpl.class
+com\community\life\mapper\OrderItemMapper.class
+com\community\life\mapper\QuarantineServiceMapper.class
